@@ -16,6 +16,9 @@ def addDaysToTitle(title, daysToNowRooz):
   selectedNumber = re.findall(r'\[(\d+)\]', title)
   newTitle = ""
   if len(selectedNumber) > 0 :
+    if selectedNumber[0] == daysToNowRooz:
+      # skip for the same day
+      return title
     newTitle = title.replace(selectedNumber[0], daysToNowRooz)
   else:
     newTitle = title + " ["+daysToNowRooz+"]"
@@ -35,9 +38,18 @@ def greet(message):
   bot.send_message(message.chat.id, "Hamegi salam")
 
 @bot.message_handler(commands=['setTitle'])
-def greet(message):
+def setTitle(message):
   prevTitle = message.chat.title
   nowRoozTitle = titleGenerator(prevTitle)
+  print(message.chat.id)
+  bot.set_chat_title(message.chat.id,nowRoozTitle)
+
+#temprory solution to lissten others message
+@bot.message_handler()
+def checkMessages(message):
+  prevTitle = message.chat.title
+  nowRoozTitle = titleGenerator(prevTitle)
+  print(message.chat.id)
   bot.set_chat_title(message.chat.id,nowRoozTitle)
 
 # chat_id = -651564694
