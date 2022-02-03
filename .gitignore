@@ -3,4 +3,5 @@
 # Environment variables
 
 .env
-
+*~
+*.save*
