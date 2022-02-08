@@ -2,7 +2,10 @@ import os
 from datetime import date
 import re
 from persiantools import digits
+from core import bot
+from dotenv import load_dotenv
 
+load_dotenv()
 
 EVENT = os.environ['EVENT']
 DATE = os.environ['DATE'] # Iso format 2022-03-20
@@ -34,3 +37,6 @@ def titleGenerator(prevTitle):
   print(newTitle)
   return newTitle
 
+def setEventTitleToGroup(chatId, prevTitle):
+  eventTitle = titleGenerator(prevTitle)
+  bot.set_chat_title(chatId,eventTitle)
