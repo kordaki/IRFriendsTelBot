@@ -2,26 +2,26 @@ import schedule #read more: https://schedule.readthedocs.io/en/stable/
 from threading import Thread
 from time import sleep
 from nowRoozEvent import setEventTitleToGroup
-from core import bot, setLog
+from core import bot, setLog, directMessageByAdmin
 
 CHAT_ID = -651564694 # in the future it should load from DB by registering groups for this feature ^_^
 
 
 # this script is not be always up for now
-# then we set a thred on any activity in the Group
-# this list helps to prevent set a new thred for the actives groups
+# then we set a thread on any activity in the Group
+# this list helps to prevent set a new thread for the actives groups
 active_group_ids = []
 def setSchedule(chatId, prevTitle):
   if(chatId in active_group_ids):
-    print("a relevant thread exist for: " + str(chatId))
+    print(f"a relevant thread exist for: {chatId}")
     return
   def scheduledMethod(): 
-    print("inside of the schedule method is running..." + str(chatId) + " prevTitle: " + prevTitle)
+    print(f"inside of the schedule method is running... {chatId} prevTitle: {prevTitle}")
     setEventTitleToGroup(chatId, prevTitle)
   schedule.every().day.at("09:00").do(scheduledMethod)
   # schedule.every().minute.at(":17").do(scheduledMethod)
   active_group_ids.append(chatId)
-  print("a new thread is set for: " + str(chatId))
+  print(f"a new thread is set for: {chatId}")
 
 def schedule_checker():
   while True:
@@ -42,7 +42,10 @@ def setTitle(message):
   print(message.chat.id)
   setEventTitleToGroup(chatId, prevTitle)
 
-#temprory solution to listen others message
+@bot.message_handler(commands=['direct'])
+def handleDirectMessage(message):
+  directMessageByAdmin(message)
+
 @bot.message_handler()
 def checkMessages(message):
   prevTitle = message.chat.title
@@ -55,5 +58,4 @@ def checkMessages(message):
 # chat_id = -651564694
 # bot.send_message(chat_id, "sag")
 
-# bot.infinity_polling(interval=10, timeout=20)
 bot.polling()
