@@ -2,7 +2,7 @@ import schedule #read more: https://schedule.readthedocs.io/en/stable/
 from threading import Thread
 from time import sleep
 from nowRoozEvent import setEventTitleToGroup
-from core import bot
+from core import bot, setLog
 
 CHAT_ID = -651564694 # in the future it should load from DB by registering groups for this feature ^_^
 
@@ -48,8 +48,9 @@ def checkMessages(message):
   prevTitle = message.chat.title
   chatId = message.chat.id
   print(message.chat.id)
-  # setEventTitleToGroup(prevTitle, chatId)
+  setLog(message)
   setSchedule(chatId, prevTitle)
+
 
 # chat_id = -651564694
 # bot.send_message(chat_id, "sag")
