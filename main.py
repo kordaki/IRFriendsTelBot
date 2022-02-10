@@ -29,6 +29,12 @@ def schedule_checker():
     sleep(1)
 Thread(target=schedule_checker).start() 
 
+
+@bot.message_handler(commands=['start'])
+def greet(message):
+  bot.send_message(message.chat.id, "در خدمتم")
+
+
 @bot.message_handler(commands=['salam'])
 def greet(message):
   bot.reply_to(message, "Aleyke salam")
